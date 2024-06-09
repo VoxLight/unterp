@@ -116,7 +116,7 @@ def run_gui():
     code_entry_frame = tk.Frame(paned_window, bg=theme['secondary_bg'])
     
     # Add the toolbar frame inside the code entry frame, at the top
-    toolbar_frame = tk.Frame(code_entry_frame, bg=theme['input_bg'], container=True)
+    toolbar_frame = tk.Frame(code_entry_frame, bg=theme['input_bg'])
     toolbar_frame.pack(side=tk.TOP, anchor='ne', padx=5, pady=5)
 
     # Load button icons
