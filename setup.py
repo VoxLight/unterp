@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='unterp',
-    version='1.0.2',
+    version='1.0.3',
     description='Minimalistic Python Interpreter with a GUI',
     author='VoxLight',
     author_email='tkkt392@gmail.com',

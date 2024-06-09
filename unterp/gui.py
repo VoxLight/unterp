@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import scrolledtext, ttk
 from PIL import Image, ImageTk
 from pygments import lex
-from pygments.lexers import PythonLexer
+from pygments.lexers.python import PythonLexer
 from pygments.styles import get_style_by_name
 from pygments.token import Token
 from .interpreter import interpreter
@@ -40,8 +40,8 @@ def create_tooltip(widget, text):
     widget.bind("<Enter>", show_tooltip)
     widget.bind("<Leave>", hide_tooltip)
 
-def apply_syntax_highlighting(text_widget, code):
-    text_widget.mark_set("range_start", "1.0")
+def apply_syntax_highlighting(text_widget, code, range_offset):
+    text_widget.mark_set("range_start", f"{range_offset + 1}.0")
     tokens = lex(code, PythonLexer())
     
     for ttype, value in tokens:
@@ -56,13 +56,13 @@ def highlight_code(event=None, code_entry=None):
         return
     
     code = code_entry.get("1.0", tk.END)
-    code_entry.mark_set("range_start", "1.0")
-
+    newline_count = len(code) - len(code.lstrip('\n'))
+    
     # Clear existing tags
     for tag in code_entry.tag_names():
         code_entry.tag_remove(tag, "1.0", tk.END)
 
-    apply_syntax_highlighting(code_entry, code)
+    apply_syntax_highlighting(code_entry, code.lstrip('\n'), newline_count)
 
 def run_gui():
     current_code = []
