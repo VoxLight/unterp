@@ -40,14 +40,16 @@ def create_tooltip(widget, text):
     widget.bind("<Enter>", show_tooltip)
     widget.bind("<Leave>", hide_tooltip)
 
-def apply_syntax_highlighting(code_entry, code, lexer):
-    tokens = lex(code, lexer)
+def apply_syntax_highlighting(text_widget, code):
+    text_widget.mark_set("range_start", "1.0")
+    tokens = lex(code, PythonLexer())
+    
     for ttype, value in tokens:
-        start_index = code_entry.index("range_start")
+        start_index = text_widget.index("range_start")
         end_index = f"range_start + {len(value)}c"
-        code_entry.mark_set("range_end", end_index)
-        code_entry.tag_add(str(ttype), "range_start", "range_end")
-        code_entry.mark_set("range_start", "range_end")
+        text_widget.mark_set("range_end", end_index)
+        text_widget.tag_add(str(ttype), "range_start", "range_end")
+        text_widget.mark_set("range_start", "range_end")
 
 def highlight_code(event=None, code_entry=None):
     if code_entry is None:
@@ -60,7 +62,7 @@ def highlight_code(event=None, code_entry=None):
     for tag in code_entry.tag_names():
         code_entry.tag_remove(tag, "1.0", tk.END)
 
-    apply_syntax_highlighting(code_entry, code, PythonLexer())
+    apply_syntax_highlighting(code_entry, code)
 
 def run_gui():
     current_code = []
@@ -143,14 +145,22 @@ def run_gui():
     code_entry.bind("<Control-Return>", on_submit)
     code_entry.configure(bg=theme['input_bg'], fg=theme['foreground'], insertbackground=theme['cursor'], padx=10, pady=10)
 
+    # Load pygments style and apply it to the code_entry widget
+    pygments_style = get_style_by_name('default')
+    default_color = theme['foreground']  # Default color if not specified by pygments style
+
+    for token, style in pygments_style:
+        hex_color = style['color']
+        if hex_color:
+            color = f'#{hex_color}'
+        else:
+            color = default_color
+        code_entry.tag_configure(str(token), foreground=color)
+    
+    # Ensure all text gets a default color if not matched by any token
+    code_entry.tag_configure(str(Token), foreground=default_color)
+
     paned_window.add(code_entry_frame, stretch="always")
-
-    # Update the layout periodically to ensure smooth resizing
-    def update_layout():
-        root.update_idletasks()
-        root.after(50, update_layout)
-
-    update_layout()
 
     root.mainloop()
 
