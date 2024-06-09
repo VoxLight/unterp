@@ -18,4 +18,4 @@ Welcome to **Unterp**, a minimalistic Python interpreter with a simple and intui
 To install the library directly from the GitHub repository, use the following command:
 
 ```sh
-pip install git+https://github.com/yourusername/unterp.git
+pip install git+https://github.com/voxlight/unterp.git
