@@ -4,7 +4,7 @@ setup(
     name='unterp',
     description='Minimalistic Python interpreter',
 
-    version='0.1.0 beta',
+    version='0.1.0',
     author='VoxLight',
 
     packages=find_packages(),
