@@ -19,3 +19,17 @@ To install the library directly from the GitHub repository, use the following co
 
 ```sh
 pip install git+https://github.com/voxlight/unterp.git
+```
+
+## Using unterp
+
+Just run unterp as a module.
+
+```sh
+python -m unterp
+```
+
+## Contribute
+
+Feel free to open issues for anything, or make pull requests.
+
